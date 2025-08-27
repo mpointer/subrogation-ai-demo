@@ -90,30 +90,6 @@ const ExceptionsQueue: React.FC = () => {
     }
   };
 
-  const getStatusBadge = (status: ExceptionCase['status']) => {
-    const baseClasses = "px-3 py-1 rounded-full text-sm font-medium";
-    switch (status) {
-      case 'pending_review':
-        return `${baseClasses} bg-yellow-100 text-yellow-800`;
-      case 'reviewed':
-        return `${baseClasses} bg-red-100 text-red-800`;
-      case 'corrected':
-        return `${baseClasses} bg-green-100 text-green-800`;
-    }
-  };
-
-  const getFlagTypeColor = (flagType: ExceptionCase['flagType']) => {
-    switch (flagType) {
-      case 'auto_accident':
-        return 'bg-blue-100 text-blue-800';
-      case 'workplace_injury':
-        return 'bg-orange-100 text-orange-800';
-      case 'third_party_liability':
-        return 'bg-purple-100 text-purple-800';
-      case 'coordination_of_benefits':
-        return 'bg-green-100 text-green-800';
-    }
-  };
 
   const handleSubmitReview = (caseId: string) => {
     console.log(`Submitting review for case ${caseId}`, { reviewDecision, reviewComments });
