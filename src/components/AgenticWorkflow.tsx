@@ -221,6 +221,88 @@ const AgenticWorkflow: React.FC = () => {
     }
   };
 
+  const formatAgentOutput = (agent: WorkflowAgent) => {
+    if (!agent.output) return null;
+
+    switch (agent.type) {
+      case 'ocr_parsing':
+        return (
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-blue-600">✓ Document Parsed Successfully</span>
+              <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded">95% Confidence</span>
+            </div>
+            <p className="text-xs text-gray-600">Extracted {Math.floor(Math.random() * 500 + 200)} words from PDF</p>
+          </div>
+        );
+      
+      case 'liability_detection':
+        const liability = agent.output as any;
+        return (
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-orange-600">⚠ Liability Signal Detected</span>
+              <span className="text-xs px-2 py-1 bg-orange-100 text-orange-700 rounded">{liability.confidence}% Match</span>
+            </div>
+            <div className="text-xs space-y-1">
+              <div><span className="font-medium">Type:</span> {liability.flagType?.replace('_', ' ').toUpperCase()}</div>
+              <div><span className="font-medium">Key Phrase:</span> "{liability.highlightedText}"</div>
+            </div>
+          </div>
+        );
+      
+      case 'rules_engine':
+        const rules = agent.output as any;
+        return (
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-purple-600">⚖ Rules Applied</span>
+              <span className={`text-xs px-2 py-1 rounded ${rules.priority === 'high' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'}`}>
+                {rules.priority?.toUpperCase()} Priority
+              </span>
+            </div>
+            <div className="text-xs space-y-1">
+              <div><span className="font-medium">Recommendation:</span> {rules.recommendation?.replace('_', ' ')}</div>
+              <div><span className="font-medium">Est. Recovery:</span> ${rules.estimated_recovery?.toLocaleString()}</div>
+            </div>
+          </div>
+        );
+      
+      case 'decision_agent':
+        const decision = agent.output as any;
+        return (
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-green-600">✅ Final Decision</span>
+              <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded">{decision.confidence}% Confidence</span>
+            </div>
+            <div className="text-xs space-y-1">
+              <div><span className="font-medium">Action:</span> {decision.final_decision?.replace('_', ' ')}</div>
+              <div><span className="font-medium">Reasoning:</span> {decision.reasoning}</div>
+            </div>
+          </div>
+        );
+      
+      case 'workflow_routing':
+        const routing = agent.output as any;
+        return (
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-indigo-600">🔄 Routed Successfully</span>
+              <span className="text-xs px-2 py-1 bg-indigo-100 text-indigo-700 rounded">Assigned</span>
+            </div>
+            <div className="text-xs space-y-1">
+              <div><span className="font-medium">Queue:</span> {routing.route?.replace('_', ' ')}</div>
+              <div><span className="font-medium">Reviewer:</span> {routing.assigned_reviewer}</div>
+            </div>
+          </div>
+        );
+      
+      default:
+        return <div className="text-xs text-gray-500">Processing complete</div>;
+    }
+  };
+
   const getAgentIcon = (type: WorkflowAgent['type']) => {
     switch (type) {
       case 'ocr_parsing':
@@ -432,9 +514,9 @@ const AgenticWorkflow: React.FC = () => {
                       
                       {agent.output && (
                         <div className="mt-3">
-                          <p className="text-xs text-gray-500 mb-1">Output:</p>
-                          <div className="text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
-                            {JSON.stringify(agent.output, null, 2).slice(0, 100)}...
+                          <p className="text-xs text-gray-500 mb-2">Result:</p>
+                          <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg border-l-4 border-blue-400">
+                            {formatAgentOutput(agent)}
                           </div>
                         </div>
                       )}
