@@ -385,7 +385,7 @@ const AgenticWorkflow: React.FC = () => {
   };
 
   return (
-    <div className="workflow-container space-y-6">
+    <div className="workflow-container">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -426,7 +426,7 @@ const AgenticWorkflow: React.FC = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="card"
+        className="card mt-8"
       >
         <div className="border-b border-gray-200 dark:border-gray-700 p-6 pb-4">
           <div className="flex items-center justify-between">
@@ -461,7 +461,7 @@ const AgenticWorkflow: React.FC = () => {
         </div>
 
         <div className="p-6">
-          <div className="space-y-6">
+          <div>
             {selectedWorkflow.agents.map((agent, index) => (
               <motion.div
                 key={agent.id}
@@ -504,18 +504,18 @@ const AgenticWorkflow: React.FC = () => {
                       </div>
                       
                       {agent.input && (
-                        <div className="mt-3">
-                          <p className="text-xs text-gray-500 mb-1">Input:</p>
-                          <div className="text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        <div className="mt-4">
+                          <p className="text-xs text-gray-500 mb-2">Input:</p>
+                          <div className="agent-input-output">
                             {JSON.stringify(agent.input, null, 2).slice(0, 100)}...
                           </div>
                         </div>
                       )}
                       
                       {agent.output && (
-                        <div className="mt-3">
+                        <div className="mt-4">
                           <p className="text-xs text-gray-500 mb-2">Result:</p>
-                          <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg border-l-4 border-blue-400">
+                          <div className="agent-input-output">
                             {formatAgentOutput(agent)}
                           </div>
                         </div>
@@ -543,7 +543,7 @@ const AgenticWorkflow: React.FC = () => {
       </motion.div>
 
       {/* Workflow Statistics */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
