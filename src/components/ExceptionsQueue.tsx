@@ -127,7 +127,7 @@ const ExceptionsQueue: React.FC = () => {
   const accuracyRate = (reviewedCases.filter(c => c.status === 'corrected').length / reviewedCases.length * 100).toFixed(1);
 
   return (
-    <div className="space-y-6">
+    <div className="exceptions-container">
       {/* Header Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <motion.div
@@ -218,13 +218,13 @@ const ExceptionsQueue: React.FC = () => {
                   key={exceptionCase.id}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 bg-yellow-50 dark:bg-yellow-900/20"
+                  className="exception-card pending"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
                         <span className="font-semibold text-lg">{exceptionCase.claimNumber}</span>
-                        <span className={`px-2 py-1 rounded text-xs font-medium ${getFlagTypeColor(exceptionCase.flagType)}`}>
+                        <span className="exception-badge pending">
                           {exceptionCase.flagType.replace('_', ' ')}
                         </span>
                         <span className="text-gray-400">•</span>
@@ -276,14 +276,14 @@ const ExceptionsQueue: React.FC = () => {
                 key={exceptionCase.id}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="border border-gray-200 dark:border-gray-700 rounded-lg p-4"
+                className={`exception-card ${exceptionCase.status === 'corrected' ? 'corrected' : 'reviewed'}`}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       {getStatusIcon(exceptionCase.status)}
                       <span className="font-semibold">{exceptionCase.claimNumber}</span>
-                      <span className={getStatusBadge(exceptionCase.status)}>
+                      <span className={`exception-badge ${exceptionCase.status === 'corrected' ? 'corrected' : 'reviewed'}`}>
                         {exceptionCase.status.replace('_', ' ')}
                       </span>
                       <span className="text-gray-400">•</span>
@@ -337,7 +337,7 @@ const ExceptionsQueue: React.FC = () => {
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+            className="review-modal p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
             onClick={e => e.stopPropagation()}
           >
             <div className="border-b border-gray-200 dark:border-gray-700 pb-4 mb-6">
@@ -345,7 +345,7 @@ const ExceptionsQueue: React.FC = () => {
               <p className="text-gray-400">Member: {selectedCase.memberName}</p>
             </div>
             
-            <div className="space-y-6">
+            <div className="review-form">
               <div>
                 <h4 className="font-semibold mb-2">AI Analysis</h4>
                 <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded">
@@ -362,7 +362,7 @@ const ExceptionsQueue: React.FC = () => {
                 <select
                   value={reviewDecision}
                   onChange={(e) => setReviewDecision(e.target.value)}
-                  className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700"
+                  className="w-full"
                 >
                   <option value="">Select decision...</option>
                   <option value="correct">AI was correct - pursue subrogation</option>
@@ -377,7 +377,7 @@ const ExceptionsQueue: React.FC = () => {
                   value={reviewComments}
                   onChange={(e) => setReviewComments(e.target.value)}
                   placeholder="Provide feedback to help the AI learn..."
-                  className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 h-32"
+                  className="w-full h-32"
                 />
               </div>
               
