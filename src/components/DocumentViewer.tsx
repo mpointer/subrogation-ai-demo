@@ -67,14 +67,14 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50"
+      className="fixed inset-0 bg-black/70 flex items-center justify-center p-2 sm:p-4 z-50 overflow-hidden"
       onClick={onClose}
     >
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
-        className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-6xl w-full h-[90vh] flex flex-col"
+        className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-6xl w-full max-h-[95vh] sm:max-h-[90vh] h-[95vh] sm:h-[90vh] flex flex-col mx-auto"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
@@ -137,7 +137,7 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 overflow-hidden min-h-0">
           {viewMode === 'pdf' ? (
             <div className="h-full w-full relative">
               {isLoading && (
@@ -150,10 +150,10 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({
               )}
               <iframe
                 src={documentUrl}
-                className="w-full h-full border-0"
+                className="w-full h-full border-0 rounded-lg"
                 title={title}
                 onLoad={() => setIsLoading(false)}
-                style={{ minHeight: '500px' }}
+                style={{ minHeight: '500px', backgroundColor: '#ffffff' }}
               />
             </div>
           ) : (
