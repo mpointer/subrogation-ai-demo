@@ -37,6 +37,7 @@ function App() {
       <header className="app-header">
         <div className="logo-container">
           <h1 className="app-title">Subrogation AI Platform</h1>
+          <span className="text-xs text-gray-500 ml-2">v{Date.now()}</span>
         </div>
         
         <nav className="main-nav">
